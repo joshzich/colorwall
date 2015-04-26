@@ -5118,3 +5118,17 @@ Processing by ArticlesController#edit as HTML
   Rendered articles/_form.html.erb (3.8ms)
   Rendered articles/edit.html.erb within layouts/application (6.0ms)
 Completed 200 OK in 54ms (Views: 51.3ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/articles" for ::1 at 2015-04-26 09:16:16 -0500
+Processing by ArticlesController#index as HTML
+  [1m[35mArticle Load (0.4ms)[0m  SELECT "articles".* FROM "articles"
+  Rendered articles/index.html.erb within layouts/application (2.8ms)
+Completed 200 OK in 68ms (Views: 67.0ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/articles" for ::1 at 2015-04-26 09:16:23 -0500
+Processing by ArticlesController#index as HTML
+  [1m[36mArticle Load (0.3ms)[0m  [1mSELECT "articles".* FROM "articles"[0m
+  Rendered articles/index.html.erb within layouts/application (2.2ms)
+Completed 200 OK in 34ms (Views: 33.3ms | ActiveRecord: 0.3ms)
