@@ -19,9 +19,9 @@
 
 	<h2>Add a comment</h2>
 	
-	<div class="comment">
+
 		<%= render 'comments/form' %>
-	</div>
+
 
 	<% if @article.user.id == session[:id] %>
 		<%= link_to_if(@article.user.id == session[:id],'Edit', article_path(@article))	%>

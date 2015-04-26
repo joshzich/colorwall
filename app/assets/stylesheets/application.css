@@ -137,3 +137,7 @@ li {
 	display: inline-block;
 	vertical-align: center;
 }
+
+.comment {
+	border:1px solid black;
+}
