@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
 	has_many :articles 
 	has_many :comments
 
+	validates :username, :email, :password, presence: true
+
 	def password=(pass_input)
 		self.hashed_password = BCrypt::Password.create(pass_input)
 	end
@@ -15,4 +17,5 @@ class User < ActiveRecord::Base
 		return user if user && user.password == pass_input
 		nil 
 	end
+
 end

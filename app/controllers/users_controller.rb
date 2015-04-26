@@ -13,11 +13,12 @@ class UsersController < ApplicationController
 			redirect_to "/users/#{@user.id}"
 		else
 			@errors = @user.errors.full_messages
-			render 'welcome#index'
+			render 'welcome/index'
 		end
 	end
 
 	def show
+	 @user = User.find(params[:id])
 	end
 
 	private
