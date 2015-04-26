@@ -2,19 +2,14 @@
 
 <div class= "container">
 <table class="article">
-	<tr>
-		<th>Title</th>
-		<th>Text</th>
-		<th>Author</th>
-	</tr>
 	<% @articles.each do |article| %>
 
 
 			
 			<tr>
-				<td><%= article.title %></td>
-				<td><%= article.text %></td>
-				<td><%= article.user.username %></td>
+				<td><h3><%= article.title %></h3></td>
+				<td><p><%= article.text %></p></td>
+				<td><strong><%= article.user.username %></strong></td>
 				<td><%= link_to "show", article_path(article) %></td>
 				<% if article.user.id == session[:id] %>
 					<td><%= link_to "edit", edit_article_path(article) %></td>

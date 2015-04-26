@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Blog</title>
+  <title>Awesome Blog</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
   <%= csrf_meta_tags %>
@@ -10,10 +10,11 @@
 	<header>
 		<% if session[:id] != nil %>
 			<ul>
-				<li><%= link_to_unless_current("home", articles_path) %></li>
-				<%= link_to "logout", logout_path, method: 'destroy' %>
+				<li><%= link_to_unless_current("main", articles_path) %></li>
+				<li><%= link_to "logout", logout_path, method: 'destroy' %></li>
 			</ul>
 		<% end %>
+		<h1>Blog!</h1>
 	</header>
 <%= yield %>
 
