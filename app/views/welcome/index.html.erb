@@ -1,7 +1,4 @@
-<h1>Hello, Rails!</h1>
-<% if session[:id] != nil %>
-	<%= link_to 'My Blog', user_path(@user) %>
-<% end %>
+<h1>Welcome!</h1>
 <h1>Register</h1>
 <% if session[:id] == nil %>
 	<%= form_for :user, url: '/users' do |f| %>

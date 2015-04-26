@@ -23300,3 +23300,581 @@ Processing by ArticlesController#index as HTML
   [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 5]]
   Rendered articles/index.html.erb within layouts/application (5.6ms)
 Completed 200 OK in 51ms (Views: 49.7ms | ActiveRecord: 0.9ms)
+  [1m[36m (5054.9ms)[0m  [1mDROP DATABASE IF EXISTS "blog_development"[0m
+PG::ObjectInUse: ERROR:  database "blog_development" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+: DROP DATABASE IF EXISTS "blog_development"
+  [1m[36m (143.0ms)[0m  [1mDROP DATABASE IF EXISTS "blog_development"[0m
+  [1m[36m (471.5ms)[0m  [1mCREATE DATABASE "blog_development" ENCODING = 'unicode'[0m
+  [1m[36m (32.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (2.4ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateArticles (20150426011805)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (23.0ms)[0m  [1mCREATE TABLE "articles" ("id" serial primary key, "title" character varying, "text" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426011805"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateComments (20150426055756)
+  [1m[35m (6.3ms)[0m  BEGIN
+  [1m[36m (16.2ms)[0m  [1mCREATE TABLE "comments" ("id" serial primary key, "commenter" character varying, "body" text, "article_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.2ms)[0m  CREATE  INDEX  "index_comments_on_article_id" ON "comments"  ("article_id")
+  [1m[36m (25.6ms)[0m  [1mALTER TABLE "comments" ADD CONSTRAINT "fk_rails_3bf61a60d3"
+FOREIGN KEY ("article_id")
+  REFERENCES "articles" ("id")
+[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426055756"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUsers (20150426141714)
+  [1m[35m (5.9ms)[0m  BEGIN
+  [1m[36m (14.3ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "username" character varying, "email" character varying, "hashed_password" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426141714"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddColumnUserToArticles (20150426164601)
+  [1m[35m (6.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "articles" ADD "user_id" integer[0m
+  [1m[35m (7.3ms)[0m  CREATE  INDEX  "index_articles_on_user_id" ON "articles"  ("user_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20150426164601"]]
+  [1m[35m (5.2ms)[0m  COMMIT
+Migrating to AddColumnUserToComments (20150426164612)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "comments" ADD "user_id" integer
+  [1m[36m (6.6ms)[0m  [1mCREATE  INDEX  "index_comments_on_user_id" ON "comments"  ("user_id")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426164612"]]
+  [1m[36m (6.1ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (3.2ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'articles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'comments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (1.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+
+
+Started GET "/" for ::1 at 2015-04-26 17:18:17 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (8.6ms)
+Completed 500 Internal Server Error in 32ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (No route matches {:action=>"show", :controller=>"users", :id=>nil} missing required keys: [:id]):
+    1: <h1>Hello, Rails!</h1>
+    2: <% if session[:id] != nil %>
+    3: 	<%= link_to 'My Blog', user_path(@user) %>
+    4: <% end %>
+    5: <h1>Register</h1>
+    6: <% if session[:id] == nil %>
+  app/views/welcome/index.html.erb:3:in `_app_views_welcome_index_html_erb__4075728186328452806_70112381786200'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_source.erb (5.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (28.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (24.8ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (99.5ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "William"], ["email", "kiel_bogan@okunevazboncak.org"], ["hashed_password", "$2a$10$jRyKxssciS0ex93BRn6gyucnEli0HvOQvMvyZjYDfqIMSxITmsHcW"], ["created_at", "2015-04-26 22:25:39.371272"], ["updated_at", "2015-04-26 22:25:39.371272"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Soluta illum amet non delectus dolor."], ["text", "Provident doloremque in qui voluptatem quaerat ut nisi. Quisquam quia dolores delectus. Corrupti ut natus iste quos omnis dicta. Tempora eos vitae molestiae omnis sunt. Ut consectetur dolore iure expedita sint."], ["created_at", "2015-04-26 22:25:39.401718"], ["updated_at", "2015-04-26 22:25:39.401718"]]
+  [1m[36m (6.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-04-26 22:25:39.436411"], ["id", 1]]
+  [1m[35m (6.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Placeat et voluptatem rem asperiores quia recusandae error consequuntur."], ["text", "Non reprehenderit veniam. Accusantium omnis corporis eaque deserunt. Et voluptas recusandae dolore ipsa. Dolorem deleniti mollitia ratione amet et."], ["created_at", "2015-04-26 22:25:39.454181"], ["updated_at", "2015-04-26 22:25:39.454181"]]
+  [1m[36m (6.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-04-26 22:25:39.463819"], ["id", 2]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Eos pariatur et optio."], ["text", "Et eligendi est et aut. Delectus harum in reiciendis distinctio. Accusantium tenetur aliquam omnis velit aspernatur. Et iure sint. Ut aut pariatur et non."], ["created_at", "2015-04-26 22:25:39.467586"], ["updated_at", "2015-04-26 22:25:39.467586"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-04-26 22:25:39.471049"], ["id", 3]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Ipsa ea ipsum dolorem est et."], ["text", "Dolore et voluptas et quod quae qui. Consequuntur quam et quod consequatur placeat officiis. Amet qui facilis ut saepe ut. Libero maxime quam possimus voluptatem alias."], ["created_at", "2015-04-26 22:25:39.474202"], ["updated_at", "2015-04-26 22:25:39.474202"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-04-26 22:25:39.477314"], ["id", 4]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Et atque voluptates ut eum deserunt."], ["text", "Officia sed facere tempore. Nihil nulla minus voluptatem iste unde. Est consequatur animi est dolorem modi accusamus."], ["created_at", "2015-04-26 22:25:39.480990"], ["updated_at", "2015-04-26 22:25:39.480990"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-04-26 22:25:39.483698"], ["id", 5]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Bertram"], ["email", "jasper.fay@lockmanwiegand.org"], ["hashed_password", "$2a$10$GPh1Nvb53Fbbn4fuR7H7Gu9mx8QNf8u8Uuc73X3BH2APYpiaQl6x."], ["created_at", "2015-04-26 22:25:39.579656"], ["updated_at", "2015-04-26 22:25:39.579656"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Quidem ea velit quis iusto similique quas minima."], ["text", "Veritatis quas tempora esse in quia dicta et. Quo officiis ipsum harum blanditiis. Labore fugiat nulla tempora sunt explicabo quidem. Ipsam ipsum voluptas perspiciatis."], ["created_at", "2015-04-26 22:25:39.591909"], ["updated_at", "2015-04-26 22:25:39.591909"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-04-26 22:25:39.596184"], ["id", 6]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Numquam est qui amet."], ["text", "Voluptatem vitae repellendus ullam enim aperiam laudantium. Et a expedita et. Enim aut dolor. Quibusdam atque deleniti rerum. Et est reprehenderit ad quidem sapiente a ea."], ["created_at", "2015-04-26 22:25:39.600082"], ["updated_at", "2015-04-26 22:25:39.600082"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-04-26 22:25:39.603258"], ["id", 7]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Distinctio eveniet qui sequi excepturi consectetur sit odit."], ["text", "Quasi occaecati odit magni explicabo repellat non. Adipisci suscipit consequatur beatae aperiam officia distinctio. Laudantium porro modi occaecati. Qui et est impedit ut eius non."], ["created_at", "2015-04-26 22:25:39.606413"], ["updated_at", "2015-04-26 22:25:39.606413"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-04-26 22:25:39.608797"], ["id", 8]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Molestiae suscipit modi id."], ["text", "Vitae consequatur saepe. Velit at quasi eveniet eaque quae ipsam. Qui ex nobis eveniet sunt qui explicabo id."], ["created_at", "2015-04-26 22:25:39.611492"], ["updated_at", "2015-04-26 22:25:39.611492"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-04-26 22:25:39.614496"], ["id", 9]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Quis dolores et omnis optio voluptatem."], ["text", "Reprehenderit voluptatem quo provident molestiae. Quia fuga harum veniam reiciendis mollitia atque recusandae. Et ea magnam delectus magni quae dignissimos laborum."], ["created_at", "2015-04-26 22:25:39.617759"], ["updated_at", "2015-04-26 22:25:39.617759"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-04-26 22:25:39.620150"], ["id", 10]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Kennedy"], ["email", "madeline.bruen@davis.com"], ["hashed_password", "$2a$10$DZ.dMqJBSD5rIBHQ55zgvOr4glECAOYWrje7fwsGw4Qn0XosZDufm"], ["created_at", "2015-04-26 22:25:39.714471"], ["updated_at", "2015-04-26 22:25:39.714471"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Corrupti quos odit voluptas."], ["text", "Quaerat aut aut ad aliquid. Dolor autem vel expedita qui. Architecto odio libero quae. Nihil nihil distinctio ad tempora. Quo tenetur aliquid."], ["created_at", "2015-04-26 22:25:39.717500"], ["updated_at", "2015-04-26 22:25:39.717500"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-04-26 22:25:39.720283"], ["id", 11]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Laboriosam voluptas debitis tempore non eos et."], ["text", "Odio molestias eius inventore velit. Autem iusto consectetur et. Nisi exercitationem ut odit. Non eaque sed consequuntur repudiandae cumque esse necessitatibus. Id quis vero vel natus."], ["created_at", "2015-04-26 22:25:39.722771"], ["updated_at", "2015-04-26 22:25:39.722771"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-04-26 22:25:39.724885"], ["id", 12]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Eum voluptas et facilis ad dolores molestiae quae."], ["text", "Quos eaque quidem. Quisquam quos minus quam. Eaque nesciunt eum sunt voluptas consequatur. Aut et magni pariatur repellat doloribus inventore."], ["created_at", "2015-04-26 22:25:39.727711"], ["updated_at", "2015-04-26 22:25:39.727711"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-04-26 22:25:39.731076"], ["id", 13]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Et quia nam cum labore sit laudantium itaque nemo."], ["text", "Laborum nihil dolores dolorem neque odio voluptates totam. Facere fugiat impedit possimus temporibus sit nostrum. Quaerat ipsam voluptatem vel reiciendis quos sed illo. Voluptatum earum esse et sequi."], ["created_at", "2015-04-26 22:25:39.733864"], ["updated_at", "2015-04-26 22:25:39.733864"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-04-26 22:25:39.736182"], ["id", 14]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Dolorem occaecati sunt quo et earum."], ["text", "Ut amet libero aut repellendus odio omnis laboriosam. Sint autem harum. Rerum quia ut maxime voluptas et sint. Repudiandae ab inventore quibusdam. Natus qui dolorem aperiam dolorum officiis ea."], ["created_at", "2015-04-26 22:25:39.738507"], ["updated_at", "2015-04-26 22:25:39.738507"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-04-26 22:25:39.740472"], ["id", 15]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Alfreda"], ["email", "jonathon.lehner@schmidt.biz"], ["hashed_password", "$2a$10$j4sm/l2uqNlnpplD8wxBXeP2HYyHwJyMRh8cGog73/gocx1fHHZxq"], ["created_at", "2015-04-26 22:25:39.828842"], ["updated_at", "2015-04-26 22:25:39.828842"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Doloribus mollitia id provident rerum."], ["text", "Illum blanditiis quam quia assumenda. Vel aut ut quia. Commodi nihil rerum voluptas placeat. Sequi in nam."], ["created_at", "2015-04-26 22:25:39.831963"], ["updated_at", "2015-04-26 22:25:39.831963"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-04-26 22:25:39.835095"], ["id", 16]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Odit quos voluptatem voluptas."], ["text", "Voluptas et et tempora. Voluptas non nulla quia quos quidem. Odio aliquid ea veniam molestiae."], ["created_at", "2015-04-26 22:25:39.838460"], ["updated_at", "2015-04-26 22:25:39.838460"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-04-26 22:25:39.840984"], ["id", 17]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Veritatis qui aut mollitia minus ut aut voluptatem blanditiis."], ["text", "Illum dolorem quos voluptas veritatis inventore. Sequi odit ut aut non sed. Maiores aliquid quia at voluptates sequi minus. Atque magni modi dolores sapiente voluptatem rerum officiis."], ["created_at", "2015-04-26 22:25:39.899768"], ["updated_at", "2015-04-26 22:25:39.899768"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-04-26 22:25:39.903033"], ["id", 18]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Non ea natus laboriosam neque ut omnis."], ["text", "Enim modi mollitia aut sunt quos eaque culpa. Mollitia soluta omnis nam. Ipsam quae consequatur voluptas et soluta ex voluptatem. Beatae praesentium sapiente sed."], ["created_at", "2015-04-26 22:25:39.906218"], ["updated_at", "2015-04-26 22:25:39.906218"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-04-26 22:25:39.908968"], ["id", 19]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Nobis nam vel quia."], ["text", "Sint aut sequi dolorem voluptatem. Cumque voluptatum vero id ut autem id. Qui voluptatem sed labore aut et libero quis. Commodi sit aut et cumque qui omnis."], ["created_at", "2015-04-26 22:25:39.911795"], ["updated_at", "2015-04-26 22:25:39.911795"]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-04-26 22:25:39.914225"], ["id", 20]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Kariane"], ["email", "dallin_schmidt@grant.net"], ["hashed_password", "$2a$10$A53oq1xoERLIHgkWc7qtn.2rrI/fHmL58bhCLpwIvFN6WAlku32IW"], ["created_at", "2015-04-26 22:25:40.011559"], ["updated_at", "2015-04-26 22:25:40.011559"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Adipisci quae quam vel et necessitatibus."], ["text", "Laborum consequatur natus non deleniti id. Sunt quod rerum numquam esse eum. Voluptate repudiandae iste voluptatem. Est quisquam nostrum aut aliquid."], ["created_at", "2015-04-26 22:25:40.023175"], ["updated_at", "2015-04-26 22:25:40.023175"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-04-26 22:25:40.027129"], ["id", 21]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Fuga tempora quod veritatis incidunt."], ["text", "Accusamus id aut similique rerum fugiat. Aut sint odit ut. Aut sit ipsa enim sed. Ut voluptates voluptatem officiis unde nemo. Facilis nostrum magnam."], ["created_at", "2015-04-26 22:25:40.030585"], ["updated_at", "2015-04-26 22:25:40.030585"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-04-26 22:25:40.033786"], ["id", 22]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Voluptas ab quaerat omnis ea ut est cum et."], ["text", "Minus ut quis asperiores deleniti. Sunt ut ducimus. Dolorem in eius excepturi asperiores ducimus dolores eum. Porro est quis doloribus laboriosam omnis. Qui aut laborum error in aut."], ["created_at", "2015-04-26 22:25:40.037116"], ["updated_at", "2015-04-26 22:25:40.037116"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-04-26 22:25:40.039563"], ["id", 23]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Ipsam esse voluptas sed eum blanditiis quaerat natus."], ["text", "At repellat veritatis. Nesciunt est ullam. Ipsam odio nulla minus qui quis. Est et et sed."], ["created_at", "2015-04-26 22:25:40.042323"], ["updated_at", "2015-04-26 22:25:40.042323"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-04-26 22:25:40.044931"], ["id", 24]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Est unde accusamus id nam."], ["text", "Mollitia aut iste optio et reiciendis. Culpa magni earum cum. Eum illum velit. Voluptatibus blanditiis distinctio quis omnis autem ab."], ["created_at", "2015-04-26 22:25:40.047595"], ["updated_at", "2015-04-26 22:25:40.047595"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-04-26 22:25:40.050137"], ["id", 25]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Jovani"], ["email", "remington_hudson@mclaughlin.info"], ["hashed_password", "$2a$10$AcLP3RBsXdzCemgKzx2m0OX2gB0Qw6M4JyfPIGt4uZYfUuVUFCfVS"], ["created_at", "2015-04-26 22:25:40.138895"], ["updated_at", "2015-04-26 22:25:40.138895"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Dolore sint qui animi."], ["text", "Assumenda quia consequatur necessitatibus est. Aliquid rem minus aut quas rerum ducimus dolor. Quos soluta et temporibus. Iusto fuga debitis natus. Ut sed corrupti odio accusantium sed non et."], ["created_at", "2015-04-26 22:25:40.142056"], ["updated_at", "2015-04-26 22:25:40.142056"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-04-26 22:25:40.145161"], ["id", 26]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Corporis iure rerum qui blanditiis molestiae earum illum vel."], ["text", "Non sapiente laboriosam qui iusto. Quos facere velit. Nostrum mollitia quis. Sint rerum dolorem eum aut beatae ut ea. Id quia praesentium perferendis aut nemo est."], ["created_at", "2015-04-26 22:25:40.148613"], ["updated_at", "2015-04-26 22:25:40.148613"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-04-26 22:25:40.151769"], ["id", 27]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Voluptatum inventore ad doloremque iste."], ["text", "Consequuntur neque maxime nostrum eligendi quod aliquam aliquid. Sint in nihil. At quisquam sit eveniet et beatae aut doloribus. Similique sint assumenda aut est sed delectus."], ["created_at", "2015-04-26 22:25:40.155036"], ["updated_at", "2015-04-26 22:25:40.155036"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-04-26 22:25:40.158238"], ["id", 28]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Fuga praesentium qui et ut iste dolore dignissimos."], ["text", "Quis nostrum vel autem in et aliquam. Ipsam molestiae omnis laudantium ea sapiente amet. Deleniti consequatur aut ipsum vel doloribus nihil. Provident error nesciunt consequatur. Porro asperiores error excepturi aut totam quaerat."], ["created_at", "2015-04-26 22:25:40.161478"], ["updated_at", "2015-04-26 22:25:40.161478"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-04-26 22:25:40.164136"], ["id", 29]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Est quod iusto debitis et totam nihil."], ["text", "Nulla eum quam pariatur totam. Explicabo iure est similique amet. Ea itaque sed nihil ad perspiciatis voluptas. Sunt dolore ut. Sed id dolor praesentium."], ["created_at", "2015-04-26 22:25:40.166818"], ["updated_at", "2015-04-26 22:25:40.166818"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-04-26 22:25:40.169456"], ["id", 30]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Kirstin"], ["email", "jerel@rempel.com"], ["hashed_password", "$2a$10$a8KiV.1cOyKq6RmTXI6QZuW1NuYXL4WpgofzqAfUqm4ON8Cjzwz86"], ["created_at", "2015-04-26 22:25:40.255532"], ["updated_at", "2015-04-26 22:25:40.255532"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Quo numquam dolores corrupti voluptatibus aspernatur alias dolores et."], ["text", "Aperiam explicabo id. Unde ab facilis voluptas at sunt. Ut placeat sequi sit. Laborum et veniam."], ["created_at", "2015-04-26 22:25:40.258527"], ["updated_at", "2015-04-26 22:25:40.258527"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-04-26 22:25:40.261286"], ["id", 31]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Sit omnis perferendis commodi et nam."], ["text", "Debitis illum reprehenderit. Fugiat in ut odit non. Error iste quibusdam ipsam eaque sunt est illo."], ["created_at", "2015-04-26 22:25:40.264119"], ["updated_at", "2015-04-26 22:25:40.264119"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-04-26 22:25:40.267180"], ["id", 32]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Est voluptatem ipsa ipsam consequatur nesciunt fugit voluptatum."], ["text", "Et recusandae cumque aperiam veritatis atque. Quae quo provident aut. Iusto consequatur voluptates. Rerum quos eligendi magni eaque harum."], ["created_at", "2015-04-26 22:25:40.269714"], ["updated_at", "2015-04-26 22:25:40.269714"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-04-26 22:25:40.272076"], ["id", 33]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Nam omnis ea animi et similique."], ["text", "Ut consequatur debitis non. Quas deleniti voluptas dolorem qui in dignissimos. Ut laborum aut consequatur qui non ipsa."], ["created_at", "2015-04-26 22:25:40.274388"], ["updated_at", "2015-04-26 22:25:40.274388"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-04-26 22:25:40.276661"], ["id", 34]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Quis rerum aut quasi recusandae sunt cum voluptatum rerum."], ["text", "Dolor et qui aut. Eaque ipsam rem id et. Omnis iusto nam et qui sed quia."], ["created_at", "2015-04-26 22:25:40.279757"], ["updated_at", "2015-04-26 22:25:40.279757"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-04-26 22:25:40.283105"], ["id", 35]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Demarcus"], ["email", "margarette_bernier@wyman.info"], ["hashed_password", "$2a$10$cJSKmsqtHO3N69jZ..Lq2OwA5JBfXMtqWnQtQcnHZBK/eHsMIIWgK"], ["created_at", "2015-04-26 22:25:40.370184"], ["updated_at", "2015-04-26 22:25:40.370184"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Velit distinctio dolorem ipsum."], ["text", "Rem officia porro facilis itaque est. Nulla doloribus reprehenderit aut impedit amet alias ipsa. Fuga aut voluptas sed nostrum labore amet distinctio. Odit corrupti et rerum eligendi corporis libero nobis. Nihil nostrum vitae."], ["created_at", "2015-04-26 22:25:40.373270"], ["updated_at", "2015-04-26 22:25:40.373270"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-04-26 22:25:40.375887"], ["id", 36]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Quis earum quas et odit dolores ut."], ["text", "Quaerat sit dolor rem maxime voluptatum eum veritatis. Velit optio aut hic deleniti possimus facilis et. Ullam eos totam sit nam."], ["created_at", "2015-04-26 22:25:40.378407"], ["updated_at", "2015-04-26 22:25:40.378407"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-04-26 22:25:40.380754"], ["id", 37]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Sit eligendi cumque voluptatem omnis error."], ["text", "Tenetur non quia alias incidunt ex ducimus. Veritatis a sed ut qui est quia. Aut dolor dolorum."], ["created_at", "2015-04-26 22:25:40.384512"], ["updated_at", "2015-04-26 22:25:40.384512"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-04-26 22:25:40.387122"], ["id", 38]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Aut dignissimos cupiditate maiores maxime quia reiciendis et."], ["text", "Et sit quia laudantium non non minus impedit. Soluta deleniti eligendi officiis. Quasi voluptatem odit. Culpa reiciendis non quidem maxime."], ["created_at", "2015-04-26 22:25:40.390032"], ["updated_at", "2015-04-26 22:25:40.390032"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-04-26 22:25:40.392940"], ["id", 39]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Et ut inventore dolorum soluta non unde."], ["text", "Quasi earum et aspernatur nihil officia quo dicta. Laboriosam quam enim perferendis. Nobis architecto exercitationem minima."], ["created_at", "2015-04-26 22:25:40.396107"], ["updated_at", "2015-04-26 22:25:40.396107"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-04-26 22:25:40.398825"], ["id", 40]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Shanna"], ["email", "estel.hermiston@pagac.net"], ["hashed_password", "$2a$10$RechcZQnC6WZhDoqrUkiweIL3xp9LAkCiS5vZys9zr7I2L6z9MHFu"], ["created_at", "2015-04-26 22:25:40.505385"], ["updated_at", "2015-04-26 22:25:40.505385"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Non quae voluptatem et sed."], ["text", "Tenetur quisquam quo ipsa velit repudiandae. Aspernatur et dignissimos. Magni qui repudiandae commodi deleniti eveniet."], ["created_at", "2015-04-26 22:25:40.516906"], ["updated_at", "2015-04-26 22:25:40.516906"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-04-26 22:25:40.520672"], ["id", 41]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Rem excepturi aut corporis."], ["text", "Id quis et aut excepturi repellat. Illo quia aut. Sunt ad natus temporibus nihil. Sed facilis occaecati."], ["created_at", "2015-04-26 22:25:40.524078"], ["updated_at", "2015-04-26 22:25:40.524078"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-04-26 22:25:40.526947"], ["id", 42]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Exercitationem sunt totam iure aspernatur voluptatem."], ["text", "Porro veniam et consequuntur. Maiores minima sequi eaque quibusdam quisquam. Id ut vitae ea aut. Quasi quis nemo deleniti incidunt id."], ["created_at", "2015-04-26 22:25:40.530071"], ["updated_at", "2015-04-26 22:25:40.530071"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-04-26 22:25:40.532743"], ["id", 43]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Expedita rem consequuntur eos voluptas debitis."], ["text", "Repudiandae velit doloremque consequatur. Ut mollitia quos iure non excepturi omnis cum. Rerum libero sit."], ["created_at", "2015-04-26 22:25:40.535542"], ["updated_at", "2015-04-26 22:25:40.535542"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-04-26 22:25:40.538112"], ["id", 44]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Ad pariatur quasi quam sequi minima accusantium doloribus."], ["text", "Minima in repellendus. Recusandae est iure officiis qui amet praesentium. Ut esse enim pariatur assumenda aut delectus. Officia aut molestiae."], ["created_at", "2015-04-26 22:25:40.541361"], ["updated_at", "2015-04-26 22:25:40.541361"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-04-26 22:25:40.544476"], ["id", 45]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Janiya"], ["email", "isaiah@nikolaus.name"], ["hashed_password", "$2a$10$urn/6mqFeCD7lrIW0RnkEuUWK0kHOvq1WpRWb64g3JEpmW3jmRgfa"], ["created_at", "2015-04-26 22:25:40.646894"], ["updated_at", "2015-04-26 22:25:40.646894"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Dolor ex ipsa eaque."], ["text", "Qui eos eveniet dolores asperiores dolor magni ut. Quia quisquam sunt voluptatem facere aut doloribus dolorem. Architecto quas et nesciunt est exercitationem corporis. Iusto est vero neque dolores vel molestias. Vero perferendis iusto eligendi voluptatibus impedit dignissimos."], ["created_at", "2015-04-26 22:25:40.659533"], ["updated_at", "2015-04-26 22:25:40.659533"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-04-26 22:25:40.663876"], ["id", 46]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Doloremque odio voluptatem dolorem voluptas."], ["text", "Quia esse mollitia id enim quia assumenda nihil. Dolorum non hic sequi et qui. Nostrum fugiat est. Molestias voluptatum illo iste aspernatur."], ["created_at", "2015-04-26 22:25:40.667380"], ["updated_at", "2015-04-26 22:25:40.667380"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-04-26 22:25:40.670046"], ["id", 47]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Sint et animi sequi enim iusto eos incidunt illo."], ["text", "Officiis asperiores sunt explicabo consequatur. Sed suscipit numquam ut expedita ex optio accusamus. Ducimus nam reiciendis quia at eveniet. Quaerat neque velit distinctio voluptatibus repudiandae rerum incidunt. Id itaque aliquid perferendis tempore alias distinctio."], ["created_at", "2015-04-26 22:25:40.672530"], ["updated_at", "2015-04-26 22:25:40.672530"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-04-26 22:25:40.674768"], ["id", 48]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Sit inventore necessitatibus cumque reprehenderit alias qui."], ["text", "Deleniti molestias doloribus est ab quia praesentium. Illo nesciunt iusto dolor dolorum. Quasi consequatur laborum eveniet. Ut incidunt expedita atque et."], ["created_at", "2015-04-26 22:25:40.677544"], ["updated_at", "2015-04-26 22:25:40.677544"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-04-26 22:25:40.680459"], ["id", 49]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Aut nesciunt est libero odit magni."], ["text", "Et iusto incidunt ducimus et repudiandae omnis quasi. Consequatur incidunt in voluptates non magni voluptas est. Dignissimos iure deserunt voluptatibus temporibus voluptas ut."], ["created_at", "2015-04-26 22:25:40.683535"], ["updated_at", "2015-04-26 22:25:40.683535"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-04-26 22:25:40.686054"], ["id", 50]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+
+
+Started GET "/" for ::1 at 2015-04-26 17:26:18 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (4.9ms)
+Completed 500 Internal Server Error in 22ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (No route matches {:action=>"show", :controller=>"users", :id=>nil} missing required keys: [:id]):
+    1: <h1>Hello, Rails!</h1>
+    2: <% if session[:id] != nil %>
+    3: 	<%= link_to 'My Blog', user_path(@user) %>
+    4: <% end %>
+    5: <h1>Register</h1>
+    6: <% if session[:id] == nil %>
+  app/views/welcome/index.html.erb:3:in `_app_views_welcome_index_html_erb__3674156457987979233_70305454564620'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_source.erb (9.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (48.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (79.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (17.8ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (101.6ms)
+
+
+Started GET "/" for ::1 at 2015-04-26 17:27:54 -0500
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (0.8ms)
+Completed 200 OK in 496ms (Views: 495.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/comments.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/articles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/normalize.self-178f35f331339ec28e2c9490cec9a660e4d03aa418a45651eb3d9d662263951d.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/application.self-a77a6f51ac00437a979f69d84c77b1f6a8c6ae7063d1db3473cc953b4dbab41b.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/welcome.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/jquery.self-d03a5518f45df77341bdbe6201ba3bfa547ebba8ed64f0ea56bfa5f96ea7c074.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/jquery_ujs.self-8e98a7a072a6cee1372d19fff9ff3e6aa1e39a37d89d6f06861637d061113ee7.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/comments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/articles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/application.self-f8806224e027f3e3f0138ea9ce99319e298dfdb323304d1f1be6eae8e8c74724.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/assets/welcome.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:27:55 -0500
+
+
+Started GET "/" for ::1 at 2015-04-26 17:28:49 -0500
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (520.2ms)
+Completed 200 OK in 679ms (Views: 677.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/articles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/normalize.self-178f35f331339ec28e2c9490cec9a660e4d03aa418a45651eb3d9d662263951d.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/jquery_ujs.self-8e98a7a072a6cee1372d19fff9ff3e6aa1e39a37d89d6f06861637d061113ee7.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/comments.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/application.self-a77a6f51ac00437a979f69d84c77b1f6a8c6ae7063d1db3473cc953b4dbab41b.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/welcome.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/jquery.self-d03a5518f45df77341bdbe6201ba3bfa547ebba8ed64f0ea56bfa5f96ea7c074.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/articles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/application.self-f8806224e027f3e3f0138ea9ce99319e298dfdb323304d1f1be6eae8e8c74724.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/comments.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
+
+
+Started GET "/assets/welcome.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2015-04-26 17:28:50 -0500
