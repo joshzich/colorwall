@@ -1,2 +1,18 @@
+<% if @user.id == session[:id] %>
+	<div class="container">
+	<h1>Hello, <%= @user.username %>!</h1>
+	<%= link_to 'add article', new_article_path %>
+	</div>
+<% end %>
 
-<h1>Hello <%= @user.username %></h1>
+<% if @user.articles.any? %>
+	<% @user.articles.each do |article| %>
+	<div class="container">
+		<div class = "article">
+			<h1><%= article.title %></h1>
+			<p><%= article.text %></p>
+			<p><%= article.created_at %></p>
+		<% end %>
+		</div>
+	</div>
+<% end %>

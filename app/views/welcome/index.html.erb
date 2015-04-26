@@ -1,6 +1,8 @@
 <h1>Hello, Rails!</h1>
-<%= link_to 'My Blog', articles_path %>
-
+<% if session[:id] != nil %>
+	<%= link_to 'My Blog', user_path(@user) %>
+<% end %>
+<h1>Register</h1>
 <% if session[:id] == nil %>
 	<%= form_for :user, url: '/users' do |f| %>
 		<p>
@@ -23,6 +25,25 @@
 		</p>
 	<% end %> 
 <% end %> 
+
+<h1>Login</h1>
+<% if session[:id] == nil %>
+	<%= form_for :user, url: '/login' do |f| %>
+		<p>
+			<%= f.label :email %>
+			<%= f.text_field :email %>
+		</p>
+
+		<p>
+			<%= f.label :password %>
+			<%= f.password_field :password %>
+		</p>
+
+		<p>
+			<%= f.submit 'login' %>
+		</p>
+	<% end %>
+<% end %>
 
 <% if @errors %>
 	<% @errors.each do |error| %>

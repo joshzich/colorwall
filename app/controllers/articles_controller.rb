@@ -11,9 +11,11 @@ except: [:index, :show]
 	end
 
 	def create
+		user = User.find(session[:id])
 		@article = Article.new(article_params)
 
 		if	@article.save
+			user.articles << @article 
 			redirect_to @article 
 		else
 			render 'new'

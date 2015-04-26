@@ -1,15 +1,23 @@
-<p>
-	<strong>Commenter:</strong>
-	<%= comment.commenter %>
-</p>
+<div class="comment">
+	<p>
+		<strong>Commenter:</strong>
+		<% if comment.user %>
+			<%= comment.user.username %>
+		<% end %>
+	</p>
 
-<p>
-	<strong>Comment:</strong>
-	<%= comment.body %>
-</p>
+	<p>
+		<strong>Comment:</strong>
+		<%= comment.body %>
+	</p>
 
-<p>
-	<%= link_to 'Destroy Comment', [comment.article, comment],
-		method: :delete,
-		data: {confirm: 'Are you sure?'} %>
-</p>
+	<p>
+		<% if comment.user %>
+			<% if comment.user.id == session[:id] || comment.article.user.id == session[:id] %>
+				<%= link_to 'Destroy Comment', [comment.article, comment],
+					method: :delete,
+					data: {confirm: 'Are you sure?'} %>
+			<% end %>
+		<% end %>
+	</p>
+</div>

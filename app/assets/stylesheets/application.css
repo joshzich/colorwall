@@ -12,4 +12,48 @@
  *
  *= require_tree .
  *= require_self
- */
+ 
+
+
+.article {
+	background-color: lime;
+	padding: 5em;
+
+}
+
+.form {
+	margin-left: 5em;
+	text-align: center;	
+}
+
+.comment {
+	border: 1px dotted black;
+}
+
+.container {
+	padding-top: 3em;
+	padding-right:7em;
+	padding-left:7em;
+	margin-right: 5em;
+	margin-left: 5em;
+}
+
+.title{
+	margin-top: 0;
+	padding-bottom: 0.5em;
+	font-weight: 600;
+}
+
+.author {
+	text-align: left;
+}
+
+.body {
+	font-size: 2em;
+}
+
+header {
+	background-color: black;
+	height: 3em;
+	top: 0;
+}*/

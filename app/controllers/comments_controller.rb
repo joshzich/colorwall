@@ -3,8 +3,10 @@ class CommentsController < ApplicationController
 only: :destroy
 
 	def create
+		user = User.find(session[:id])
 		@article = Article.find(params[:article_id])
 		@comment = @article.comments.create(comment_params)
+		user.comments << @comment
 		redirect_to article_path(@article)
 	end
 
