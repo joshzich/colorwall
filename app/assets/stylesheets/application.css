@@ -95,43 +95,41 @@ td{
 
 
 form {
-background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+background-color: rgb(192, 179, 179);
 margin:auto;
 position:relative;
-width:550px;
-height:450px;
-font-family: Tahoma, Geneva, sans-serif;
-font-size: 14px;
+width:30em;
+height:30em;
+font-size: 0.8em;
 font-style: italic;
-line-height: 24px;
+line-height: 2em;
 font-weight: bold;
-color: #09C;
-text-decoration: none;
--webkit-border-radius: 10px;
--moz-border-radius: 10px;
-border-radius: 10px;
+color: white;
 padding:10px;
-border: 1px solid #999;
-border: inset 1px solid #333;
--webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
--moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
 
 input{
-width:375px;
+width:20em;
 display:block;
 border: 1px solid #999;
-height: 25px;
--webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
--moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+height: 2em;
+}
+
+textarea{
+	resize:none;
+	width: 99%;
+	height: 15em;
+
 }
 
 .container{
 	padding:5em;
 	display: inline-block;
+}
+
+.article{
+	background-color: rgb(192, 179, 179);
+
 }
 
 
