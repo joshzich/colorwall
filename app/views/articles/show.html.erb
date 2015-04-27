@@ -24,7 +24,7 @@
 
 
 	<% if @article.user.id == session[:id] %>
-		<%= link_to_if(@article.user.id == session[:id],'Edit', article_path(@article))	%>
+		<%= link_to_if(@article.user.id == session[:id],'Edit', edit_article_path(@article))	%>
 	<% end %>
 	<%= link_to 'Back', articles_path %>
 </div>
