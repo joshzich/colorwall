@@ -6,9 +6,10 @@ Rails.application.routes.draw do
 
   resources :users 
 
-  resources :articles do
-    resources :comments
-  end
+  # resources :articles do
+  #   resources :comments
+  # end
+
   
   root 'welcome#index'
 
@@ -16,7 +17,39 @@ Rails.application.routes.draw do
 
   post '/logout' => 'sessions#destroy'
 
+  get '/articles' => 'articles#index', as: :articles 
+
+  get '/articles/new' => 'articles#new', as: :new_article
+
+  post '/articles' => 'articles#create', as: :create_article
+
+  get '/articles/:id' => 'articles#show', as: :article 
+
+  get '/articles/:id/edit' => 'articles#edit', as: :edit_article
+
+  put '/articles/:id' => 'articles#update'
+
+  delete '/articles/:id' => 'articles#destroy'
+
+  get '/articles/:article_id/comments' => 'comments#index', as: :article_comments
+
+  get '/articles/:article_id/comments/new' => 'comments#new', as: :new_article_comment
+
+  post '/articles/:article_id/comments' => 'comments#create'
+
+  get '/articles/:article_id/comments/:id' => 'comments#show', as: :article_comment 
+
+  get '/articles/:article_id/comments/:id/edit' => 'comments#edit'
+
+  put '/articles/:article_id/comments/:id' => 'comments#update'
+
+  delete '/articles/:article_id/comments/:id' => 'comments#destroy'
+
+
+
   # post '/'
+
+
 
   # get '/welcome/index'
 

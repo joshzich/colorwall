@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 			session[:id] = user.id
 			redirect_to "/users/#{user.id}"
 		else
-			@errors = user.errors.full_messages
+			@errors = "invalid email or password"
 			render "welcome/index"
 		end		
 	end
