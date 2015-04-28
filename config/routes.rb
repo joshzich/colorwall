@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   get '/articles/:id/edit' => 'articles#edit', as: :edit_article
 
-  put '/articles/:id' => 'articles#update'
+  patch '/articles/:id' => 'articles#update'
 
   delete '/articles/:id' => 'articles#destroy'
 
