@@ -32195,3 +32195,793 @@ ActionController::RoutingError (No route matches [GET] "/comments.json"):
   Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.5ms)
   Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
   Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (39.3ms)
+  [1m[36m (43.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (4.0ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateArticles (20150426011805)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (32.3ms)[0m  [1mCREATE TABLE "articles" ("id" serial primary key, "title" character varying, "text" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (12.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426011805"]]
+  [1m[36m (6.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateComments (20150426055756)
+  [1m[35m (6.4ms)[0m  BEGIN
+  [1m[36m (16.8ms)[0m  [1mCREATE TABLE "comments" ("id" serial primary key, "commenter" character varying, "body" text, "article_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.5ms)[0m  CREATE  INDEX  "index_comments_on_article_id" ON "comments"  ("article_id")
+  [1m[36m (35.6ms)[0m  [1mALTER TABLE "comments" ADD CONSTRAINT "fk_rails_3bf61a60d3"
+FOREIGN KEY ("article_id")
+  REFERENCES "articles" ("id")
+[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426055756"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUsers (20150426141714)
+  [1m[35m (5.9ms)[0m  BEGIN
+  [1m[36m (15.3ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "username" character varying, "email" character varying, "hashed_password" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426141714"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddColumnUserToArticles (20150426164601)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "articles" ADD "user_id" integer[0m
+  [1m[35m (1.6ms)[0m  CREATE  INDEX  "index_articles_on_user_id" ON "articles"  ("user_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20150426164601"]]
+  [1m[35m (0.3ms)[0m  COMMIT
+Migrating to AddColumnUserToComments (20150426164612)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "comments" ADD "user_id" integer
+  [1m[36m (1.1ms)[0m  [1mCREATE  INDEX  "index_comments_on_user_id" ON "comments"  ("user_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150426164612"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (3.3ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'articles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.3ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'comments'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (1.9ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Tracy"], ["email", "jana@hageneslueilwitz.org"], ["hashed_password", "$2a$10$CX6R1nv8lQMQjX/k4TrzT.M2E8cSLlPxxYAG8a2rOMv.FzdRFWwZK"], ["created_at", "2015-05-03 22:44:00.868378"], ["updated_at", "2015-05-03 22:44:00.868378"]]
+  [1m[35m (6.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Rem omnis recusandae explicabo aut error."], ["text", "Reprehenderit recusandae illo a vero delectus. Dolore ratione nostrum deleniti aut et voluptate. Repellendus ullam facilis omnis eveniet dolorem quia."], ["created_at", "2015-05-03 22:44:00.899157"], ["updated_at", "2015-05-03 22:44:00.899157"]]
+  [1m[36m (6.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-05-03 22:44:00.934139"], ["id", 1]]
+  [1m[35m (6.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Voluptatem quae adipisci nihil."], ["text", "Accusamus consequatur possimus fugiat. Dolorum veniam et accusantium ea molestiae possimus animi. Neque voluptatibus aspernatur quidem nostrum autem. Nihil repudiandae vero est. Delectus ut quibusdam."], ["created_at", "2015-05-03 22:44:00.950808"], ["updated_at", "2015-05-03 22:44:00.950808"]]
+  [1m[36m (6.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-05-03 22:44:00.960373"], ["id", 2]]
+  [1m[35m (5.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Reiciendis numquam dignissimos quia aut nulla eum facere."], ["text", "Sint cumque distinctio nihil odio corrupti. Quis quo ad et consequatur nam aspernatur est. Ab a ut ea maxime nulla doloribus occaecati. Qui beatae et voluptatem ullam voluptatum. Voluptas consequatur aut praesentium distinctio a."], ["created_at", "2015-05-03 22:44:00.969107"], ["updated_at", "2015-05-03 22:44:00.969107"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-05-03 22:44:00.972210"], ["id", 3]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Nam omnis ut rerum voluptatem amet quis."], ["text", "Perspiciatis molestiae non voluptatem qui. At in maxime. Quia placeat repudiandae."], ["created_at", "2015-05-03 22:44:00.975173"], ["updated_at", "2015-05-03 22:44:00.975173"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-05-03 22:44:00.977482"], ["id", 4]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Deleniti velit eaque alias aliquid id accusamus."], ["text", "Voluptatem harum quia aut et minima ducimus. Soluta et fugiat provident. Animi aperiam facilis sint provident esse illum ex."], ["created_at", "2015-05-03 22:44:00.979700"], ["updated_at", "2015-05-03 22:44:00.979700"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 1], ["updated_at", "2015-05-03 22:44:00.981758"], ["id", 5]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Weston"], ["email", "maybell_lakin@hermistonhaag.name"], ["hashed_password", "$2a$10$l9PjK5v/XNJvXBNg1PZ1iuxeRY3Gc.Op8O6Y/NwNECAwhtGjTMcZe"], ["created_at", "2015-05-03 22:44:01.082452"], ["updated_at", "2015-05-03 22:44:01.082452"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Sunt repellat aut ut officia consequuntur error sapiente quia."], ["text", "Delectus perspiciatis sit eveniet quasi est. Voluptatem quisquam voluptatibus explicabo. Dolor cumque doloremque. Excepturi ad tempora qui commodi nihil rerum ducimus. At id omnis voluptas similique deleniti."], ["created_at", "2015-05-03 22:44:01.094526"], ["updated_at", "2015-05-03 22:44:01.094526"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-05-03 22:44:01.098238"], ["id", 6]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Harum officiis ducimus quas."], ["text", "Omnis sint minus dolorum ut. Labore velit adipisci cupiditate autem quisquam atque. Aperiam ab ut vel dolore mollitia sunt. Minus voluptatem totam facilis veniam eum omnis sit. Omnis sit sed minus nisi voluptates modi."], ["created_at", "2015-05-03 22:44:01.101375"], ["updated_at", "2015-05-03 22:44:01.101375"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-05-03 22:44:01.103944"], ["id", 7]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Aut sunt in esse modi distinctio ex rerum."], ["text", "Maxime laboriosam explicabo alias assumenda earum accusamus occaecati. Quibusdam exercitationem saepe nihil dolores ratione voluptatem. Et ab perspiciatis aliquid. Laudantium excepturi deserunt aut ut quod libero ut."], ["created_at", "2015-05-03 22:44:01.106820"], ["updated_at", "2015-05-03 22:44:01.106820"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-05-03 22:44:01.109583"], ["id", 8]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Ex delectus molestiae debitis explicabo incidunt."], ["text", "Officiis est ducimus sint animi. Tenetur repudiandae et. Qui cupiditate neque esse et velit aut."], ["created_at", "2015-05-03 22:44:01.111919"], ["updated_at", "2015-05-03 22:44:01.111919"]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-05-03 22:44:01.114013"], ["id", 9]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Pariatur itaque rem vel perspiciatis saepe."], ["text", "Qui temporibus consequuntur assumenda dolore id similique. Quo officiis omnis cupiditate accusamus corporis minima. Consequatur animi dolor voluptas dolore molestiae aliquid."], ["created_at", "2015-05-03 22:44:01.116157"], ["updated_at", "2015-05-03 22:44:01.116157"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 2], ["updated_at", "2015-05-03 22:44:01.118289"], ["id", 10]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Kristofer"], ["email", "camille_mante@sawaynkuhlman.name"], ["hashed_password", "$2a$10$VKwUqLYsWfeipx8yghoyqeddKzx3R4ZvawvURDgvJfbOovEZnUpcK"], ["created_at", "2015-05-03 22:44:01.228702"], ["updated_at", "2015-05-03 22:44:01.228702"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Omnis cupiditate nisi delectus."], ["text", "Et consequatur molestiae non est quo autem. In impedit quia vel repellendus. Doloremque maiores quo. Velit ipsum ut et autem ea."], ["created_at", "2015-05-03 22:44:01.239854"], ["updated_at", "2015-05-03 22:44:01.239854"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-05-03 22:44:01.243513"], ["id", 11]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Veritatis labore quia dolores."], ["text", "Laudantium animi sit accusamus. Dolores sequi nobis ab natus. Vero cumque rerum nihil optio quia."], ["created_at", "2015-05-03 22:44:01.246722"], ["updated_at", "2015-05-03 22:44:01.246722"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-05-03 22:44:01.249119"], ["id", 12]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Magni sunt quo ea eos."], ["text", "Laboriosam fugiat repudiandae dolor ratione at necessitatibus et. Quis aut reprehenderit. Ipsam quod ullam. Et totam enim nemo repellat voluptatem eius quisquam."], ["created_at", "2015-05-03 22:44:01.251878"], ["updated_at", "2015-05-03 22:44:01.251878"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-05-03 22:44:01.254603"], ["id", 13]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Perspiciatis autem ipsum explicabo."], ["text", "Corrupti expedita qui. Est eum quo quia non repellat laboriosam. Distinctio consequatur quos quam nostrum omnis culpa enim."], ["created_at", "2015-05-03 22:44:01.257411"], ["updated_at", "2015-05-03 22:44:01.257411"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-05-03 22:44:01.259792"], ["id", 14]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Fugit dolorem et quod laudantium ut adipisci."], ["text", "Eos vitae sequi. Ut omnis enim facere quam qui est consectetur. Eligendi repudiandae excepturi fuga qui quo et. Modi molestias voluptatem deleniti harum et vitae rerum."], ["created_at", "2015-05-03 22:44:01.262430"], ["updated_at", "2015-05-03 22:44:01.262430"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 3], ["updated_at", "2015-05-03 22:44:01.265239"], ["id", 15]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Rafael"], ["email", "laurence@ryan.info"], ["hashed_password", "$2a$10$2sGNBxe0YQGIwF50ZiZxoudWtzHJUrIWQNmbtrTrpMUeyMpX5uIXC"], ["created_at", "2015-05-03 22:44:01.361739"], ["updated_at", "2015-05-03 22:44:01.361739"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Magnam eligendi eveniet et."], ["text", "Commodi voluptas non et. Fuga odit minus consequuntur aut soluta vel veniam. Distinctio aut voluptatum dolor aliquid placeat est. Sit tenetur voluptas magni aperiam ullam nesciunt enim."], ["created_at", "2015-05-03 22:44:01.451675"], ["updated_at", "2015-05-03 22:44:01.451675"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-05-03 22:44:01.455767"], ["id", 16]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Non reiciendis culpa ut omnis ipsam molestias ab."], ["text", "Optio aut quas praesentium corrupti aut nobis. Culpa dolor tempore eos consequuntur est. Dolorem rem provident quibusdam soluta facilis et quia. Atque odio non ea accusamus. Possimus officia ullam est omnis commodi qui."], ["created_at", "2015-05-03 22:44:01.459264"], ["updated_at", "2015-05-03 22:44:01.459264"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-05-03 22:44:01.462313"], ["id", 17]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Consectetur eligendi et qui earum."], ["text", "Quia debitis nemo tempore. Quam hic perferendis sequi earum facilis. Omnis eos corporis hic itaque dolores quam. Et inventore veniam nihil laudantium recusandae."], ["created_at", "2015-05-03 22:44:01.465783"], ["updated_at", "2015-05-03 22:44:01.465783"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-05-03 22:44:01.468767"], ["id", 18]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Animi qui iusto voluptatibus sequi."], ["text", "Dolorem doloribus aut ut ipsa. Consequatur aliquid doloribus sit ad ut at aut. Recusandae quas tenetur. Nesciunt veniam blanditiis impedit alias aut."], ["created_at", "2015-05-03 22:44:01.471638"], ["updated_at", "2015-05-03 22:44:01.471638"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-05-03 22:44:01.473868"], ["id", 19]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Suscipit est voluptatibus est."], ["text", "Sint sapiente quam ipsam voluptatem sed dolorem. Sed soluta provident ab odit magnam eos voluptatem. Minima at eaque. Quam autem aut autem rerum ipsam."], ["created_at", "2015-05-03 22:44:01.476134"], ["updated_at", "2015-05-03 22:44:01.476134"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 4], ["updated_at", "2015-05-03 22:44:01.478214"], ["id", 20]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Cole"], ["email", "deondre@lemke.info"], ["hashed_password", "$2a$10$xifhvmKrJNEW5.NycHCo7OZJZvJJCZ2OPCn8A2EiPWffTEKlpkwFq"], ["created_at", "2015-05-03 22:44:01.576131"], ["updated_at", "2015-05-03 22:44:01.576131"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Velit ut ducimus debitis blanditiis placeat."], ["text", "Sed voluptas sit. Placeat quia id sit excepturi sequi illo. Aut fugit eum quia. Ut voluptas eos ducimus minima architecto ea."], ["created_at", "2015-05-03 22:44:01.588173"], ["updated_at", "2015-05-03 22:44:01.588173"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-05-03 22:44:01.592441"], ["id", 21]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Itaque et et maxime corporis dolor veritatis rerum."], ["text", "Repudiandae in ullam. Officia dolor similique molestiae animi sequi aliquam. Fugiat voluptatem voluptas eos necessitatibus cum sed. Beatae dolor eius iure neque et. Rem dolore omnis qui."], ["created_at", "2015-05-03 22:44:01.595524"], ["updated_at", "2015-05-03 22:44:01.595524"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-05-03 22:44:01.597854"], ["id", 22]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Ut dolorum dignissimos eaque et mollitia."], ["text", "Doloribus ut numquam in sint quisquam eius. Qui dolor alias consequatur. Totam sed possimus autem qui earum tenetur. Qui sed assumenda aperiam itaque aut nesciunt. Autem enim eius et deleniti et praesentium."], ["created_at", "2015-05-03 22:44:01.600011"], ["updated_at", "2015-05-03 22:44:01.600011"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-05-03 22:44:01.602078"], ["id", 23]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Optio omnis quis numquam quia."], ["text", "Dolor magnam modi sequi natus repellat explicabo. Vero sint tempora amet. Quia et veritatis quas quia vero a. Quisquam fugiat quod aut. Saepe autem id."], ["created_at", "2015-05-03 22:44:01.604083"], ["updated_at", "2015-05-03 22:44:01.604083"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-05-03 22:44:01.606021"], ["id", 24]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Quia voluptatem enim aspernatur itaque eius qui."], ["text", "Quis qui qui quasi laboriosam consequatur maxime. Sequi nesciunt eveniet est. Reprehenderit et est in quia. Illum ipsum optio. Dolorum a molestiae natus."], ["created_at", "2015-05-03 22:44:01.607950"], ["updated_at", "2015-05-03 22:44:01.607950"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 5], ["updated_at", "2015-05-03 22:44:01.609821"], ["id", 25]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Jarret"], ["email", "jeffrey_jacobs@nienow.org"], ["hashed_password", "$2a$10$/9xIz/XDv8tDTSAeHrPfLeRyj8JnB2j7TecLYUYfNmMSHAB.3gsoG"], ["created_at", "2015-05-03 22:44:01.709842"], ["updated_at", "2015-05-03 22:44:01.709842"]]
+  [1m[36m (8.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Id est ex quis et dolorem quidem cumque."], ["text", "Quasi soluta maiores aut et. Porro minus animi. Doloribus consequatur eum illum asperiores porro aperiam aspernatur. Aut inventore unde vel."], ["created_at", "2015-05-03 22:44:01.720995"], ["updated_at", "2015-05-03 22:44:01.720995"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-05-03 22:44:01.724553"], ["id", 26]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Omnis quis quis facere."], ["text", "Nostrum voluptatem neque hic vitae harum dolorem. Ipsum voluptatum veritatis. Qui non cum dolorem debitis."], ["created_at", "2015-05-03 22:44:01.727579"], ["updated_at", "2015-05-03 22:44:01.727579"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-05-03 22:44:01.730483"], ["id", 27]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Reiciendis consectetur velit corporis ad similique veniam facilis."], ["text", "Adipisci repudiandae tenetur ducimus quibusdam corporis numquam eaque. Omnis occaecati velit tempora nobis rem aut. Velit dignissimos commodi quibusdam sit assumenda. Aut maxime ut facilis voluptatem consectetur quod in. Et qui provident debitis qui."], ["created_at", "2015-05-03 22:44:01.733416"], ["updated_at", "2015-05-03 22:44:01.733416"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-05-03 22:44:01.736041"], ["id", 28]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Est iure velit eveniet et et ducimus maiores."], ["text", "Similique expedita velit. Quibusdam voluptatem labore ut explicabo. Praesentium cumque non enim et non aut voluptatum."], ["created_at", "2015-05-03 22:44:01.738693"], ["updated_at", "2015-05-03 22:44:01.738693"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-05-03 22:44:01.741513"], ["id", 29]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Id sed veniam possimus animi."], ["text", "Quasi repellat perspiciatis excepturi rerum. Voluptate dignissimos suscipit est autem et repellendus. A sunt aspernatur accusamus. Ratione laborum vero explicabo saepe similique consequatur sit. Qui omnis qui ullam reiciendis et repellat rerum."], ["created_at", "2015-05-03 22:44:01.743864"], ["updated_at", "2015-05-03 22:44:01.743864"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 6], ["updated_at", "2015-05-03 22:44:01.746159"], ["id", 30]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Benton"], ["email", "mallory.purdy@hoppegreenholt.net"], ["hashed_password", "$2a$10$ALiOKGg64fc1R0xFzIEfMOKt17CIE3iMOEmXJZwrQJf4gvmXHvHZa"], ["created_at", "2015-05-03 22:44:01.840016"], ["updated_at", "2015-05-03 22:44:01.840016"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Doloremque reiciendis nostrum et quo impedit repellendus dolorem."], ["text", "Qui voluptatum voluptates aut commodi ut distinctio. In ut autem sit animi impedit. Sit repudiandae accusamus quisquam dolorem dolor nihil. Reprehenderit ut tempore distinctio."], ["created_at", "2015-05-03 22:44:01.842864"], ["updated_at", "2015-05-03 22:44:01.842864"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-05-03 22:44:01.845563"], ["id", 31]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Nisi dolor commodi voluptates."], ["text", "Itaque voluptates reprehenderit possimus eius nesciunt aut. Enim in porro est unde aut itaque. Quas vel et in. Tempora consequatur eius."], ["created_at", "2015-05-03 22:44:01.848521"], ["updated_at", "2015-05-03 22:44:01.848521"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-05-03 22:44:01.850683"], ["id", 32]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Qui aliquid et iusto quam doloremque vitae hic possimus."], ["text", "Sit cupiditate inventore. Quis sunt possimus occaecati fugiat beatae commodi. Fugit officiis ut."], ["created_at", "2015-05-03 22:44:01.852762"], ["updated_at", "2015-05-03 22:44:01.852762"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-05-03 22:44:01.854786"], ["id", 33]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "In vero at sit alias voluptatibus nesciunt et."], ["text", "Beatae et dolorem molestiae voluptate est quibusdam. In et doloribus. Dolor sed modi non. Quasi nostrum omnis est."], ["created_at", "2015-05-03 22:44:01.857113"], ["updated_at", "2015-05-03 22:44:01.857113"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-05-03 22:44:01.859973"], ["id", 34]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Numquam totam quia rerum atque."], ["text", "Animi eos eligendi enim possimus voluptatem adipisci. Totam quia blanditiis quam aut quo cum. Ea eligendi quia rem."], ["created_at", "2015-05-03 22:44:01.862286"], ["updated_at", "2015-05-03 22:44:01.862286"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 7], ["updated_at", "2015-05-03 22:44:01.864423"], ["id", 35]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Ignacio"], ["email", "clyde.hyatt@spencer.info"], ["hashed_password", "$2a$10$6nffU9eIQkGxZFCRW/dYvOVJyd7t0ih.rX8jB3TBdvrfyKWzTZLvW"], ["created_at", "2015-05-03 22:44:01.966389"], ["updated_at", "2015-05-03 22:44:01.966389"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Labore similique repellat fuga eum."], ["text", "Dolores facere deleniti et dolorum. Est corrupti voluptas non commodi ut. Voluptatum doloribus voluptatem."], ["created_at", "2015-05-03 22:44:01.978418"], ["updated_at", "2015-05-03 22:44:01.978418"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-05-03 22:44:01.981936"], ["id", 36]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Cum qui sint eum."], ["text", "Et excepturi eum aut rem. Illo quis cumque qui. Autem deserunt non. Dolores mollitia illum quia repellat voluptatibus repudiandae. Impedit accusantium ducimus sunt omnis velit."], ["created_at", "2015-05-03 22:44:01.985028"], ["updated_at", "2015-05-03 22:44:01.985028"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-05-03 22:44:01.987585"], ["id", 37]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Consectetur omnis facilis quod et vel veniam aut dignissimos."], ["text", "Mollitia pariatur natus in. Sit consectetur molestias illum ratione. A cum maxime repudiandae illo aut omnis. Ea blanditiis consequuntur iste non praesentium. Ducimus enim delectus."], ["created_at", "2015-05-03 22:44:01.990464"], ["updated_at", "2015-05-03 22:44:01.990464"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-05-03 22:44:01.993129"], ["id", 38]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Recusandae sed unde odit facilis."], ["text", "Provident et odio ex dignissimos fugit voluptatum. Reiciendis iure distinctio explicabo. Nemo similique hic exercitationem veniam rerum. Provident ut quis."], ["created_at", "2015-05-03 22:44:01.995697"], ["updated_at", "2015-05-03 22:44:01.995697"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-05-03 22:44:01.998259"], ["id", 39]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Est reiciendis cum aut aut repudiandae eum mollitia."], ["text", "Aut quibusdam voluptatem id et adipisci. Est et nobis minima nostrum perspiciatis itaque optio. Aut sint placeat. Aut adipisci fuga cupiditate eos."], ["created_at", "2015-05-03 22:44:02.000782"], ["updated_at", "2015-05-03 22:44:02.000782"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 8], ["updated_at", "2015-05-03 22:44:02.002759"], ["id", 40]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Amparo"], ["email", "glenna@robertslesch.net"], ["hashed_password", "$2a$10$qJVKJM454KK7md3X4CnB.ukVe/TBifz0IgbifonhOtObo5c9ar1/y"], ["created_at", "2015-05-03 22:44:02.103013"], ["updated_at", "2015-05-03 22:44:02.103013"]]
+  [1m[35m (8.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Nemo est est qui saepe voluptas."], ["text", "Occaecati id fugit et ut. Rerum ipsa et odit quia labore. Exercitationem maiores libero quis eos debitis. Aliquam aperiam aliquid animi commodi iste consequuntur sit. Quis facere iure est enim sit in."], ["created_at", "2015-05-03 22:44:02.114178"], ["updated_at", "2015-05-03 22:44:02.114178"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-05-03 22:44:02.117692"], ["id", 41]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Tempore quia dolorem non laborum ipsam."], ["text", "Dicta perspiciatis sed debitis adipisci ratione. Quae consequatur nesciunt voluptatem rerum totam. Magni consectetur est placeat dolores architecto velit. Sed optio mollitia sint saepe."], ["created_at", "2015-05-03 22:44:02.120772"], ["updated_at", "2015-05-03 22:44:02.120772"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-05-03 22:44:02.124049"], ["id", 42]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Dolores repudiandae dolores corporis sunt dolorem ipsum doloribus."], ["text", "Vero blanditiis aut est ipsa dolores consequatur. Excepturi laudantium aliquid. Vel libero placeat odit sit. Aperiam sit nihil distinctio magni blanditiis occaecati."], ["created_at", "2015-05-03 22:44:02.127136"], ["updated_at", "2015-05-03 22:44:02.127136"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-05-03 22:44:02.129890"], ["id", 43]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Accusamus qui natus minima itaque laboriosam voluptatem dicta harum."], ["text", "Delectus dolores ea consequatur. Distinctio odit sit. Corrupti consequatur animi fuga ut dolorem fugit est. Nostrum illum et consequatur voluptates vero enim consequatur. Et velit molestias eveniet nihil."], ["created_at", "2015-05-03 22:44:02.132263"], ["updated_at", "2015-05-03 22:44:02.132263"]]
+  [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-05-03 22:44:02.134360"], ["id", 44]]
+  [1m[35m (0.3ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["title", "Quo rem maiores dolores."], ["text", "Quas rem in est. Enim tempora id non aliquam. Numquam aut eaque quia odit corrupti autem accusantium. Sit aut commodi at. Sint nobis deleniti velit."], ["created_at", "2015-05-03 22:44:02.136217"], ["updated_at", "2015-05-03 22:44:02.136217"]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3[0m  [["user_id", 9], ["updated_at", "2015-05-03 22:44:02.138002"], ["id", 45]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "hashed_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["username", "Jany"], ["email", "wendell_murphy@jacobi.com"], ["hashed_password", "$2a$10$aS9s3altYzJUUcmNqSDOZ.KwJBVmDP.1JB/IMd1ELtiSSFypLr/Fm"], ["created_at", "2015-05-03 22:44:02.235961"], ["updated_at", "2015-05-03 22:44:02.235961"]]
+  [1m[36m (8.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Ipsum ut voluptas harum nulla ad."], ["text", "Non dicta qui fuga assumenda. Voluptatem sit ipsum quisquam sit ut. Id sunt consequatur cumque velit non placeat."], ["created_at", "2015-05-03 22:44:02.247246"], ["updated_at", "2015-05-03 22:44:02.247246"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-05-03 22:44:02.250938"], ["id", 46]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Eius repudiandae voluptatibus commodi non."], ["text", "Et est ea eos id. Voluptas similique veritatis. Doloribus qui minima. Aut exercitationem voluptatum enim consequatur ut. Dicta ad quas eum earum corrupti atque reiciendis."], ["created_at", "2015-05-03 22:44:02.254023"], ["updated_at", "2015-05-03 22:44:02.254023"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-05-03 22:44:02.256634"], ["id", 47]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Repellat qui alias eos explicabo corrupti odio ullam illo."], ["text", "Laudantium laboriosam repellendus est quam repudiandae. Quas fuga numquam dicta accusamus enim occaecati quasi. In occaecati dignissimos odio delectus modi et velit. Quia eaque id deleniti est est sed facilis. Cupiditate dolorem vel."], ["created_at", "2015-05-03 22:44:02.258876"], ["updated_at", "2015-05-03 22:44:02.258876"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-05-03 22:44:02.261043"], ["id", 48]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Libero sunt et soluta."], ["text", "Sit deleniti qui molestiae. Nam sint quis eos nemo iste ex omnis. Nemo nostrum corrupti. Qui voluptatibus illum sit maxime tempore porro."], ["created_at", "2015-05-03 22:44:02.263775"], ["updated_at", "2015-05-03 22:44:02.263775"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-05-03 22:44:02.266093"], ["id", 49]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "articles" ("title", "text", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Iste et quisquam magni explicabo distinctio laudantium in."], ["text", "Sequi voluptatibus exercitationem culpa non dignissimos. Consectetur qui consequuntur. Quia minus ea nihil perferendis veniam. Minima iusto esse voluptate eos."], ["created_at", "2015-05-03 22:44:02.269081"], ["updated_at", "2015-05-03 22:44:02.269081"]]
+  [1m[35m (0.4ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "articles" SET "user_id" = $1, "updated_at" = $2 WHERE "articles"."id" = $3  [["user_id", 10], ["updated_at", "2015-05-03 22:44:02.271894"], ["id", 50]]
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:33 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.8ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (10.0ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (26.2ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (58.2ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:36 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.8ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (5.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (17.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (43.9ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:38 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (4.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (17.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (36.8ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:40 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (4.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (108.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (127.1ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:43 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (6.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (17.1ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (35.4ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:46 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.7ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (5.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (19.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (39.6ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:49 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.6ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (4.8ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (19.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (37.9ms)
+
+
+Started GET "/comments.json" for ::1 at 2015-05-03 17:44:51 -0500
+
+ActionController::RoutingError (No route matches [GET] "/comments.json"):
+  actionpack (4.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.1.2) lib/web_console/middleware.rb:37:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.1) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.0) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.0) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.1) lib/action_dispatch/middleware/static.rb:113:in `call'
+  rack (1.6.0) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.1) lib/rails/engine.rb:518:in `call'
+  railties (4.2.1) lib/rails/application.rb:164:in `call'
+  rack (1.6.0) lib/rack/lock.rb:17:in `call'
+  rack (1.6.0) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.0) lib/rack/handler/webrick.rb:89:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/_trace.text.erb (0.4ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/actionpack-4.2.1/lib/action_dispatch/middleware/templates/rescues/routing_error.text.erb (4.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/console.js.erb within layouts/javascript (16.9ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/joshuadzich1/.rbenv/versions/2.0.0-p481/lib/ruby/gems/2.0.0/gems/web-console-2.1.2/lib/web_console/templates/index.html.erb (109.3ms)
+
+
+Started GET "/articles" for ::1 at 2015-05-03 17:52:36 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (26.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ArticlesController#index as HTML
+  [1m[35mArticle Load (32.0ms)[0m  SELECT "articles".* FROM "articles"
+  [1m[36mUser Load (13.9ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 3]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 3]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 3]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 3]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 3]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 4]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 4]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 4]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 4]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 4]]
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 5]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 5]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 6]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 6]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 6]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 6]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 6]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 7]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 7]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 7]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 7]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 7]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 8]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 8]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 8]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 8]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 8]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 9]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 9]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 9]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 9]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 9]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 10]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 10]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 10]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 10]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 10]]
+  Rendered articles/index.html.erb within layouts/application (220.8ms)
+Completed 200 OK in 1882ms (Views: 1810.2ms | ActiveRecord: 61.0ms)
