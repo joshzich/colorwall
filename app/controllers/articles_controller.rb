@@ -22,6 +22,15 @@ except: [:index, :show]
 		end
 	end
 
+	# def create
+	#   article = Article.new
+	#   article.created_by = current_user.id # `created_by` tracks which user authored the article
+	#   article.attributes = params[:article]
+	#   article.save
+
+	#   redirect_to articles_url
+	# end
+
 	def show
 		@article = Article.find(params[:id])
 	end
